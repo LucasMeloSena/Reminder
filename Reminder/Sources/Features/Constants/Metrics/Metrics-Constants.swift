@@ -14,4 +14,6 @@ public struct Metrics {
     static let small: CGFloat = 12
     static let tiny: CGFloat = 8
     static let little: CGFloat = 4
+    static let buttonSize: CGFloat = 56
+    static let inputSize: CGFloat = 56
 }
