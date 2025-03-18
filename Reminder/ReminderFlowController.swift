@@ -43,8 +43,32 @@ extension ReminderFlowController: SplashFlowDelegate {
 extension ReminderFlowController: LoginBottomSheetFlowDelegate {
     func navigateToHome() {
         self.navigationController?.dismiss(animated: false)
-        let homeViewController = UIViewController()
-        homeViewController.view.backgroundColor = .red
+        let homeViewController = viewControllerFactory.makeHomeViewController(flowDelegate: self)
         self.navigationController?.pushViewController(homeViewController, animated: true)
+    }
+}
+
+
+// MARK: - Home
+extension ReminderFlowController: HomeFlowDelegate {
+    func navigateToLogin() {
+        self.navigationController?.popViewController(animated: true)
+        self.navigateToLoginBottomSheet()
+    }
+}
+
+// MARK: - NewMedicine
+extension ReminderFlowController: NewMedicineFlowDelegate {
+    func navigateToMyMedicines() {
+        //
+    }
+    
+    func navigateToNewMedicine() {
+        let newMedicineController = viewControllerFactory.makeNewMedicineController(flowDelegate: self)
+        self.navigationController?.pushViewController(newMedicineController, animated: true)
+    }
+    
+    func navigateToHomeFromNewMedicine() {
+        self.navigationController?.popViewController(animated: true)
     }
 }

@@ -8,7 +8,13 @@
 import Foundation
 import UIKit
 
-final class ViewControllersFactory: ViewControllersFactoryProtocol {    
+final class ViewControllersFactory: ViewControllersFactoryProtocol {
+    func makeNewMedicineController(flowDelegate: NewMedicineFlowDelegate) -> NewMedicineViewController {
+        let contentView = NewMedicineView()
+        let viewController = NewMedicineViewController(contentView: contentView, flowDelegate: flowDelegate)
+        return viewController
+    }
+    
     func makeSplashViewController(flowDelegate: SplashFlowDelegate) -> SplashViewController {
         let contentView = SplashView()
         let viewController = SplashViewController(contentView: contentView, flowDelegate: flowDelegate)

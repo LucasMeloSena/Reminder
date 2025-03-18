@@ -28,6 +28,11 @@ class SplashViewController: UIViewController {
         splashViewBreathingAnimation()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.navigationBar.isHidden = true
+    }
+    
     private func decideNavigationFlow() {
         if let user = UserDefaultsManager.loadUser(), user.isUserSaved {
             flowDelegate?.navigateToHome()
@@ -39,19 +44,11 @@ class SplashViewController: UIViewController {
     
     private func setup() {
         self.view.addSubview(contentView)
-        self.navigationController?.navigationBar.isHidden = true
         setupConstraints()
     }
     
     private func setupConstraints() {
-        NSLayoutConstraint.activate([
-            contentView.topAnchor.constraint(equalTo: view.topAnchor),
-            contentView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            contentView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            contentView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-        ])
-        
-        contentView.translatesAutoresizingMaskIntoConstraints = false
+        setupContentView(contentView: contentView)
     }
 }
 
