@@ -38,8 +38,34 @@ class NewMedicineView: UIView {
     }()
     
     let medicineInput = Input(title: "Remédio", placeholder: "Nome do medicamento")
+    
+    let timePicker: UIDatePicker = {
+        let datePicker = UIDatePicker()
+        datePicker.datePickerMode = .time
+        datePicker.preferredDatePickerStyle = .wheels
+        datePicker.translatesAutoresizingMaskIntoConstraints = false
+        return datePicker
+    }()
+    
     let timeInput = Input(title: "Horário", placeholder: "12:00")
-    let recurrencyInput = Input(title: "Recorrência", placeholder: "Selecione")
+    
+    let recurrencePicker: UIPickerView = {
+        let picker = UIPickerView()
+        picker.translatesAutoresizingMaskIntoConstraints = false
+        return picker
+    }()
+    
+    let recurrenceOptions = [
+        "1/1",
+        "2/2",
+        "4/4",
+        "6/6",
+        "8/8",
+        "12/12",
+        "24"
+    ]
+    
+    let recurrenceInput = Input(title: "Recorrência", placeholder: "Selecione")
     let takeMedicineNow = Checkbox(title: "Tomar o remédio agora?")
     
     let addButton: UIButton = {
@@ -68,11 +94,15 @@ class NewMedicineView: UIView {
         addSubview(descriptionLabel)
         addSubview(medicineInput)
         addSubview(timeInput)
-        addSubview(recurrencyInput)
+        addSubview(recurrenceInput)
         addSubview(takeMedicineNow)
         addSubview(addButton)
         
         setupConstraints()
+        setupTimePicker()
+        setupRecurrencePicker()
+        setupObservers()
+        validateInputs()
     }
     
     private func setupConstraints() {
@@ -97,11 +127,11 @@ class NewMedicineView: UIView {
             timeInput.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Metrics.high),
             timeInput.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Metrics.high),
             
-            recurrencyInput.topAnchor.constraint(equalTo: timeInput.bottomAnchor, constant: Metrics.medium),
-            recurrencyInput.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Metrics.high),
-            recurrencyInput.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Metrics.high),
+            recurrenceInput.topAnchor.constraint(equalTo: timeInput.bottomAnchor, constant: Metrics.medium),
+            recurrenceInput.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Metrics.high),
+            recurrenceInput.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Metrics.high),
             
-            takeMedicineNow.topAnchor.constraint(equalTo: recurrencyInput.bottomAnchor, constant: Metrics.medium),
+            takeMedicineNow.topAnchor.constraint(equalTo: recurrenceInput.bottomAnchor, constant: Metrics.medium),
             takeMedicineNow.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Metrics.high),
             takeMedicineNow.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Metrics.high),
             
@@ -110,5 +140,80 @@ class NewMedicineView: UIView {
             addButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Metrics.high),
             addButton.heightAnchor.constraint(equalToConstant: 56)
         ])
+    }
+    
+    private func setupTimePicker() {
+        let tollbar = UIToolbar()
+        tollbar.sizeToFit()
+        
+        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(didSelectedTime))
+        tollbar.setItems([doneButton], animated: true)
+        
+        timeInput.input.inputView = timePicker
+        timeInput.input.inputAccessoryView = tollbar
+    }
+    
+    @objc
+    private func didSelectedTime() {
+        let formatter = DateFormatter()
+        formatter.timeStyle = .short
+        timeInput.input.text = formatter.string(from: timePicker.date)
+        timeInput.input.resignFirstResponder()
+        validateInputs()
+    }
+    
+    private func setupRecurrencePicker() {
+        let tollbar = UIToolbar()
+        tollbar.sizeToFit()
+        
+        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(didRecurrenceSelected))
+        tollbar.setItems([doneButton], animated: true)
+        
+        recurrenceInput.input.inputView = recurrencePicker
+        recurrenceInput.input.inputAccessoryView = tollbar
+        recurrencePicker.delegate = self
+        recurrencePicker.dataSource = self
+    }
+    
+    @objc
+    private func didRecurrenceSelected() {
+        let selectedRow = recurrencePicker.selectedRow(inComponent: 0)
+        recurrenceInput.input.text = recurrenceOptions[selectedRow]
+        recurrenceInput.input.resignFirstResponder()
+        validateInputs()
+    }
+    
+    private func validateInputs() {
+        let isMedicineFilled = !(medicineInput.input.text ?? "").isEmpty
+        let isTimeFilled = !(timeInput.input.text ?? "").isEmpty
+        let isRecurrenceFilled = !(recurrenceInput.input.text ?? "").isEmpty
+        
+        addButton.isEnabled = isMedicineFilled && isTimeFilled && isRecurrenceFilled
+        addButton.backgroundColor = addButton.isEnabled ? Colors.primaryRedBase : Colors.gray500
+    }
+    
+    private func setupObservers() {
+        medicineInput.input.addTarget(self, action: #selector(inputDidChange), for: .editingChanged)
+        timeInput.input.addTarget(self, action: #selector(inputDidChange), for: .editingChanged)
+        recurrenceInput.input.addTarget(self, action: #selector(inputDidChange), for: .editingChanged)
+    }
+    
+    @objc
+    private func inputDidChange() {
+        validateInputs()
+    }
+}
+
+extension NewMedicineView: UIPickerViewDelegate, UIPickerViewDataSource {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return recurrenceOptions.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return recurrenceOptions[row]
     }
 }

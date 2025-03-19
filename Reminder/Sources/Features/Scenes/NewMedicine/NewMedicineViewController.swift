@@ -11,6 +11,7 @@ import UIKit
 class NewMedicineViewController: UIViewController {
     var contentView: NewMedicineView
     weak var flowDelegate: NewMedicineFlowDelegate?
+    private let viewModel = NewMedicineViewModel()
     
     init(contentView: NewMedicineView, flowDelegate: NewMedicineFlowDelegate?) {
         self.contentView = contentView
@@ -47,10 +48,28 @@ class NewMedicineViewController: UIViewController {
     
     func setupActions() {
         contentView.backButton.addTarget(self, action: #selector(backScreen), for: .touchUpInside)
+        contentView.addButton.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
     }
     
     @objc
-    func backScreen() {
+    private func backScreen() {
         self.flowDelegate?.navigateToHomeFromNewMedicine()
+    }
+    
+    @objc
+    private func addButtonTapped() {
+        guard let medicineName = contentView.medicineInput.getText() else {
+            return
+        }
+        guard let time = contentView.timeInput.getText() else {
+            return
+        }
+        guard let recurrence = contentView.recurrenceInput.getText() else {
+            return
+        }
+        let takeNow = false
+        
+        let medicine = Medicine(id: nil, name: medicineName, time: time, recurrence: recurrence, takeNow: takeNow)
+        viewModel.addMedicine(medicine: medicine)
     }
 }
