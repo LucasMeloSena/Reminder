@@ -9,6 +9,12 @@ import Foundation
 import UIKit
 
 final class ViewControllersFactory: ViewControllersFactoryProtocol {
+    func makeMyMedicinesController(flowDelegate: any MyMedicinesFlowDelegate) -> MyMedicinesViewController {
+        let contentView = MyMedicinesView()
+        let viewController = MyMedicinesViewController(contentView: contentView, flowDelegate: flowDelegate)
+        return viewController
+    }
+    
     func makeNewMedicineController(flowDelegate: NewMedicineFlowDelegate) -> NewMedicineViewController {
         let contentView = NewMedicineView()
         let viewController = NewMedicineViewController(contentView: contentView, flowDelegate: flowDelegate)

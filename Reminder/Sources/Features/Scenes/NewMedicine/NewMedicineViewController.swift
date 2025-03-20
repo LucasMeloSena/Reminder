@@ -58,15 +58,9 @@ class NewMedicineViewController: UIViewController {
     
     @objc
     private func addButtonTapped() {
-        guard let medicineName = contentView.medicineInput.getText() else {
-            return
-        }
-        guard let time = contentView.timeInput.getText() else {
-            return
-        }
-        guard let recurrence = contentView.recurrenceInput.getText() else {
-            return
-        }
+        let medicineName = contentView.medicineInput.getText()
+        let time = contentView.timeInput.getText()
+        let recurrence = contentView.recurrenceInput.getText()
         let takeNow = false
         
         let medicine = Medicine(id: nil, name: medicineName, time: time, recurrence: recurrence, takeNow: takeNow)

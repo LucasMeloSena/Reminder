@@ -69,7 +69,7 @@ class Input: UIView {
         input.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [NSAttributedString.Key.foregroundColor: Colors.gray200])
     }
     
-    func getText() -> String? {
-        return input.text
+    func getText() -> String {
+        return input.text ?? ""
     }
 }

@@ -105,7 +105,7 @@ extension HomeViewController: UIImagePickerControllerDelegate, UINavigationContr
 
 extension HomeViewController: HomeViewDelegate {
     func navigateToMyMedicines() {
-        //
+        flowDelegate?.navigateToMyMedicines()
     }
     
     func navigateToNewMedicine() {

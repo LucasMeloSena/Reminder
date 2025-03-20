@@ -85,4 +85,50 @@ class DBHelper {
         
         sqlite3_finalize(statement)
     }
+    
+    func fecthMedicines() -> [Medicine] {
+        let fetchQuery = "SELECT * FROM Medicines"
+        var statement: OpaquePointer?
+        var medicines: [Medicine] = []
+        
+        if (sqlite3_prepare_v2(db, fetchQuery, -1, &statement, nil) == SQLITE_OK) {
+            while sqlite3_step(statement) == SQLITE_ROW {
+                let id = Int(sqlite3_column_int(statement, 0))
+                let name = sqlite3_column_text(statement, 1).flatMap { String(cString: $0) } ?? "Unknow"
+                let time = sqlite3_column_text(statement, 2).flatMap { String(cString: $0) } ?? "Unknow"
+                let recurrence = sqlite3_column_text(statement, 3).flatMap { String(cString: $0) } ?? "Unknow"
+                let takeNow = sqlite3_column_int(statement, 4) == 1
+                
+                let medicine = Medicine(id: id, name: name, time: time, recurrence: recurrence, takeNow: takeNow)
+                medicines.append(medicine)
+            }
+            if (sqlite3_step(statement) != SQLITE_DONE) {
+                print("Error searching medicines")
+            }
+        } else {
+            print("Erro executing statement")
+        }
+        sqlite3_finalize(statement)
+        
+        return medicines
+    }
+    
+    func deleteQuery(byId id: Int) {
+        let deleteQuery = """
+            DELETE FROM Medicines WHERE id = ?;
+        """
+        var statement: OpaquePointer?
+        
+        if (sqlite3_prepare_v2(db, deleteQuery, -1, &statement, nil) == SQLITE_OK) {
+            sqlite3_bind_int(statement, 1, Int32(id))
+            
+            if (sqlite3_step(statement) != SQLITE_DONE) {
+                print("Error deleting medicine")
+            }
+        } else {
+            print("Error executing statement")
+        }
+        
+        sqlite3_finalize(statement)
+    }
 }

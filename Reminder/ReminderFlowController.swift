@@ -51,6 +51,11 @@ extension ReminderFlowController: LoginBottomSheetFlowDelegate {
 
 // MARK: - Home
 extension ReminderFlowController: HomeFlowDelegate {
+    func navigateToMyMedicines() {
+        let myMedicinesController = viewControllerFactory.makeMyMedicinesController(flowDelegate: self)
+        self.navigationController?.pushViewController(myMedicinesController, animated: true)
+    }
+    
     func navigateToLogin() {
         self.navigationController?.popViewController(animated: true)
         self.navigateToLoginBottomSheet()
@@ -59,10 +64,6 @@ extension ReminderFlowController: HomeFlowDelegate {
 
 // MARK: - NewMedicine
 extension ReminderFlowController: NewMedicineFlowDelegate {
-    func navigateToMyMedicines() {
-        //
-    }
-    
     func navigateToNewMedicine() {
         let newMedicineController = viewControllerFactory.makeNewMedicineController(flowDelegate: self)
         self.navigationController?.pushViewController(newMedicineController, animated: true)
@@ -71,4 +72,9 @@ extension ReminderFlowController: NewMedicineFlowDelegate {
     func navigateToHomeFromNewMedicine() {
         self.navigationController?.popViewController(animated: true)
     }
+}
+
+// MARK: - MyMedicines
+extension ReminderFlowController: MyMedicinesFlowDelegate {
+    
 }
