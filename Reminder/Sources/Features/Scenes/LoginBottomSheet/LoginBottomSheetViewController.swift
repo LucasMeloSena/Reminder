@@ -30,13 +30,20 @@ class LoginBottomSheetViewController: UIViewController {
         
         contentView.delegate = self
         setupUI()
-        setupGesture()
         bindViewModel()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.isHidden = true
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     private func setupUI() {
@@ -51,17 +58,8 @@ class LoginBottomSheetViewController: UIViewController {
             contentView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
             contentView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
             contentView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+            contentView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.5)
         ])
-        
-        contentView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.5).isActive = true
-    }
-    
-    private func setupGesture() {
-        
-    }
-    
-    private func handlePanGesture() {
-         
     }
     
     private func presentSaveLoginAlert(email: String) {
@@ -85,7 +83,7 @@ class LoginBottomSheetViewController: UIViewController {
             self?.presentSaveLoginAlert(email: email)
         }
         
-        viewModel.error = { [weak self] errorMessage in 
+        viewModel.error = { [weak self] errorMessage in
             self?.presentErrorAlert(message: errorMessage)
         }
     }
@@ -106,6 +104,26 @@ class LoginBottomSheetViewController: UIViewController {
             self.view.layoutIfNeeded()
         }) { _ in
             completion?()
+        }
+    }
+    
+    @objc
+    private func keyboardWillShow(notification: Notification) {
+        guard let userInfo = notification.userInfo,
+              let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
+        let keyboardHeight = keyboardFrame.height
+        
+        UIView.animate(withDuration: 0.3) { [weak self] in
+            guard let self = self else { return }
+            self.view.frame.origin.y = -keyboardHeight / 1.7
+        }
+    }
+    
+    @objc
+    private func keyboardWillHide() {
+        UIView.animate(withDuration: 0.3) { [weak self] in
+            guard let self = self else { return }
+            self.view.frame.origin.y = 0
         }
     }
 }

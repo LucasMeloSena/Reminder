@@ -84,6 +84,7 @@ class LoginBottomSheetView: UIView {
         self.addSubview(loginButton)
         
         setupConstraints()
+        setupDelegates()
     }
     
     private func setupConstraints() {
@@ -119,5 +120,17 @@ class LoginBottomSheetView: UIView {
         let email = emailTextField.text ?? ""
         let password = passwordTextField.text ?? ""
         delegate?.sendLoginData(email: email, password: password)
+    }
+    
+    private func setupDelegates() {
+        emailTextField.delegate = self
+        passwordTextField.delegate = self
+    }
+}
+
+extension LoginBottomSheetView: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }

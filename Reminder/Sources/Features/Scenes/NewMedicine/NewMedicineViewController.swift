@@ -65,5 +65,7 @@ class NewMedicineViewController: UIViewController {
         
         let medicine = Medicine(id: nil, name: medicineName, time: time, recurrence: recurrence, takeNow: takeNow)
         viewModel.addMedicine(medicine: medicine)
+        contentView.playSuccessAnimation()
+        contentView.clearFields()
     }
 }

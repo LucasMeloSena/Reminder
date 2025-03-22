@@ -110,6 +110,7 @@ extension MyMedicinesViewController: UITableViewDataSource {
                let medicineId = medicine.id {
                 self.viewModel.deleteMedicine(byId: medicineId)
                 self.medicines.remove(at: updatedIndexPath.row)
+                self.viewModel.removeNofitifications(for: medicine.name)
                 tableView.deleteSections(IndexSet(integer: updatedIndexPath.section), with: .automatic)
             }
         }

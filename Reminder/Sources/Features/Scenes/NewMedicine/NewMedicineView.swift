@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import Lottie
 
 class NewMedicineView: UIView {    
     let backButton: UIButton = {
@@ -62,7 +63,7 @@ class NewMedicineView: UIView {
         "6/6",
         "8/8",
         "12/12",
-        "24"
+        "24/24"
     ]
     
     let recurrenceInput = Input(title: "Recorrência", placeholder: "Selecione")
@@ -72,11 +73,20 @@ class NewMedicineView: UIView {
         let button = UIButton()
         button.titleLabel?.font = Typography.subHeading
         button.setTitle("+ Adicionar", for: .normal)
-        button.backgroundColor = Colors.primaryRedBase
+        button.backgroundColor = button.isEnabled ? Colors.primaryRedBase : Colors.gray500
         button.layer.cornerRadius = 12
         button.setTitleColor(Colors.gray800, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
+    }()
+    
+    let successAnimationView: LottieAnimationView = { 
+        let animationView = LottieAnimationView(name: "Create-Medicine-Animation")
+        animationView.contentMode = .scaleAspectFit
+        animationView.loopMode = .playOnce
+        animationView.translatesAutoresizingMaskIntoConstraints = false
+        animationView.isHidden = true
+        return animationView
     }()
     
     override init(frame: CGRect) {
@@ -97,6 +107,7 @@ class NewMedicineView: UIView {
         addSubview(recurrenceInput)
         addSubview(takeMedicineNow)
         addSubview(addButton)
+        addSubview(successAnimationView)
         
         setupConstraints()
         setupTimePicker()
@@ -138,7 +149,12 @@ class NewMedicineView: UIView {
             addButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -Metrics.medium),
             addButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Metrics.high),
             addButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Metrics.high),
-            addButton.heightAnchor.constraint(equalToConstant: 56)
+            addButton.heightAnchor.constraint(equalToConstant: 56),
+            
+            successAnimationView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            successAnimationView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            successAnimationView.heightAnchor.constraint(equalToConstant: 120),
+            successAnimationView.widthAnchor.constraint(equalToConstant: 120)
         ])
     }
     
@@ -201,6 +217,22 @@ class NewMedicineView: UIView {
     @objc
     private func inputDidChange() {
         validateInputs()
+    }
+    
+    func playSuccessAnimation() {
+        successAnimationView.isHidden = false
+        successAnimationView.play { [weak self] finished in
+            if (finished) {
+                self?.successAnimationView.isHidden = true
+            }
+        }
+    }
+    
+    func clearFields() {
+        medicineInput.input.text = ""
+        timeInput.input.text = ""
+        recurrenceInput.input.text = ""
+        addButton.isEnabled = false
     }
 }
 
