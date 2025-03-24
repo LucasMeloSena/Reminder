@@ -1,0 +1,23 @@
+{
+  "name": "CoreApp",
+  "version": "0.0.1",
+  "summary": "Core Design to Reminder App.",
+  "description": "This project is the Reminder App Design System framework",
+  "homepage": "https://github.com/LucasMeloSena/ReminderCoreDesign",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "Lucas Sena": "lucasmelosena@gmail.com"
+  },
+  "platforms": {
+    "ios": "12.0"
+  },
+  "source": {
+    "git": "https://github.com/LucasMeloSena/ReminderCoreDesign.git",
+    "tag": "0.0.1"
+  },
+  "source_files": "CoreApp/Sources/**/*.{swift, h}",
+  "exclude_files": "Classes/Exclude"
+}

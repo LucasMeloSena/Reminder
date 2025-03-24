@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import CoreApp
 
 class NewMedicineViewController: UIViewController {
     var contentView: NewMedicineView
@@ -25,6 +26,7 @@ class NewMedicineViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setupView()
         setupConstraints()
         setupActions()
@@ -32,7 +34,14 @@ class NewMedicineViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
         navigationController?.navigationBar.isHidden = true
+        let onboarding = OnboardingViewController(content: (title: "Welcome to Reminder!", description: [
+            "1. We are here to make your medicines management easier.",
+            "2. We are the complete mobile app to help you to remember when take your medicines.",
+            "3. Have a new and healthier life with our app as never before now.",
+        ]))
+        navigationController?.present(onboarding, animated: true)
     }
     
     func setupView() {

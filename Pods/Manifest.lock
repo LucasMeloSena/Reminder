@@ -1,4 +1,5 @@
 PODS:
+  - CoreApp (0.0.1)
   - Firebase/Auth (11.9.0):
     - Firebase/CoreOnly
     - FirebaseAuth (~> 11.9.0)
@@ -52,6 +53,7 @@ PODS:
   - SQLite.swift/standard (0.15.3)
 
 DEPENDENCIES:
+  - CoreApp (from `../CoreApp`)
   - Firebase/Auth
   - lottie-ios
   - SQLite.swift
@@ -71,7 +73,12 @@ SPEC REPOS:
     - RecaptchaInterop
     - SQLite.swift
 
+EXTERNAL SOURCES:
+  CoreApp:
+    :path: "../CoreApp"
+
 SPEC CHECKSUMS:
+  CoreApp: 006542235c24f306d80e7d794a5747aee36d26f1
   Firebase: 819b973f669bc894c85e181f814171e9d4440b29
   FirebaseAppCheckInterop: 9226f7217b43e99dfa0bc9f674ad8108cef89feb
   FirebaseAuth: 8eebb43f35cd2c1bb1981e3cef27c45617b85316
@@ -85,6 +92,6 @@ SPEC CHECKSUMS:
   RecaptchaInterop: 11e0b637842dfb48308d242afc3f448062325aba
   SQLite.swift: 8d054987f02728cc912b0eb5a9659650573a65a2
 
-PODFILE CHECKSUM: f2b3acb2f58c480227c6b5a43997bbb25f1606ca
+PODFILE CHECKSUM: 8c848dd2e6beec565bca49f2af4345a29d646103
 
 COCOAPODS: 1.16.2

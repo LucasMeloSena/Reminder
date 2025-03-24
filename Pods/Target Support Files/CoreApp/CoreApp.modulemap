@@ -1,0 +1,6 @@
+framework module CoreApp {
+  umbrella header "CoreApp-umbrella.h"
+
+  export *
+  module * { export * }
+}

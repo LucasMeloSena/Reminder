@@ -9,5 +9,7 @@ target 'Reminder' do
   pod 'Firebase/Auth'
   pod 'SQLite.swift'
   pod 'lottie-ios'
-
+  #pod 'CoreApp', :git => 'https://github.com/LucasMeloSena/ReminderCoreDesign'
+  pod 'CoreApp', :path => '../CoreApp'
+  
 end
