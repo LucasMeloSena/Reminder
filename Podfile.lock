@@ -53,7 +53,7 @@ PODS:
   - SQLite.swift/standard (0.15.3)
 
 DEPENDENCIES:
-  - CoreApp (from `../CoreApp`)
+  - CoreApp (from `https://github.com/LucasMeloSena/ReminderCoreDesign`)
   - Firebase/Auth
   - lottie-ios
   - SQLite.swift
@@ -75,7 +75,12 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   CoreApp:
-    :path: "../CoreApp"
+    :git: https://github.com/LucasMeloSena/ReminderCoreDesign
+
+CHECKOUT OPTIONS:
+  CoreApp:
+    :commit: 5541b35f118e80189d8d1c10daeae2c61047e514
+    :git: https://github.com/LucasMeloSena/ReminderCoreDesign
 
 SPEC CHECKSUMS:
   CoreApp: 006542235c24f306d80e7d794a5747aee36d26f1
@@ -92,6 +97,6 @@ SPEC CHECKSUMS:
   RecaptchaInterop: 11e0b637842dfb48308d242afc3f448062325aba
   SQLite.swift: 8d054987f02728cc912b0eb5a9659650573a65a2
 
-PODFILE CHECKSUM: 8c848dd2e6beec565bca49f2af4345a29d646103
+PODFILE CHECKSUM: 28667ca588ed54028b7c4838f9e0ba0ec1af9377
 
 COCOAPODS: 1.16.2
